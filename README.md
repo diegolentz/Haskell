@@ -1,0 +1,2 @@
+# Haskell
+paradigmas de programacion
