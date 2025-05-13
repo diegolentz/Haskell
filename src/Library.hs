@@ -1,21 +1,31 @@
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 module Library where
 
-import PdePreludat (Bool (..), Eq ((==)), Number, Ord (max, (<=)), Show, String, error, even, fromInteger, (*), (+), (-), (.), (>), (>=), (||), reverse, otherwise, elem, and, or, sum, map, filter, flip, (/), not, (++), (&&))
+import PdePreludat (Bool (..), Eq ((==)), Number, Ord (max, (<=)), Show, String, error, even, fromInteger, (*), (+), (-), (.), (>), (>=), (||), reverse, otherwise, elem, and, or, sum, map, filter, flip, (/), not, (++), (&&), (^))
 import Data.Type.Coercion (trans)
 import Data.Int (Int)
+import GHC.Num (Num)
 
-elMayorDeLosTres :: Ord a => a -> a -> a -> a
-elMayorDeLosTres a b c
-  | a >= b && a >= c = a
-  | b >= a && b >= c = b
-  | otherwise = c
+sumarLista :: [Number] -> Number
+sumarLista [] = 0
+sumarLista (x:xs) = x + sumarLista xs
 
-xor' :: Bool -> Bool -> Bool
-xor' a b
-  | a == b = False
-  | otherwise = True
+longitudDeLista :: [a] -> Number
+longitudDeLista [] = 0
+longitudDeLista (x : xs) = 1 + longitudDeLista xs
 
-esMuchoMayor :: Number -> Number -> Bool
-esMuchoMayor a b = a - b > 10
+numeroElevado :: Number -> Number -> Number
+numeroElevado _ 0 = 1
+numeroElevado a b = (^b) a
 
+mostrarPrimeros :: Number -> [a] -> [a]
+mostrarPrimeros _ [] = []
+mostrarPrimeros 0 _ = []
+mostrarPrimeros n (x : xs) = x : mostrarPrimeros (n - 1) xs
+
+--no se si esta bien
+-- mostrarMientrasNoSuperaTope :: Number -> [Number] -> [Number]
+-- mostrarMientrasNoSuperaTope _ [] = []
+-- mostrarMientrasNoSuperaTope tope (x:xs)
+--     | x > tope = []
+--     | otherwise = x : mostrarMientrasNoSuperaTope (tope - x) xs
