@@ -1,36 +1,53 @@
 module Library where
-import PdePreludat ( Eq((==)), Bool(..), fromInteger, (+), Number, even, (.), String, (>), (>=) )
 
-lista :: [Number]
-lista = [1 .. 10]
+import GHC.Num (Num)
+import PdePreludat (Bool (..), Eq ((==)), Number, Show, String, even, fromInteger, (+), (.), (>), (>=))
 
-tupla :: (Number, Number)
-tupla = (1, 2)
+-- data Persona = Persona String Number
 
-head' :: [a] -> a
-head' (x : xs) = x
+-- nombre :: Persona -> String
+-- nombre (Persona _nombre _) = _nombre
 
-tail' :: [a] -> [a]
-tail' (x : xs) = xs
+-- edad :: Persona -> Number
+-- edad (Persona _ _edad) = _edad
 
+-- mayorEdad :: Number -> Bool
+-- mayorEdad edad = edad >= 18
 
-fst' :: (a , b) -> a
-fst' (primero, segundo) = primero
+-- personaMayor :: Persona -> Bool
+-- personaMayor = mayorEdad . edad
 
-snd' :: (a , b) -> b
-snd' (primero, segundo) = segundo
+-- data estructura
+data Persona = Persona
+  { nombre :: String,
+    edad :: Number,
+    domicilio :: String,
+    telefono :: String,
+    fechaNacimiento :: (Number, Number, Number),
+    buenaPersona :: Bool,
+    plata :: Number
+  }
+  deriving (Show)
 
+diego :: Persona
+diego =
+  Persona
+    { nombre = "Diego",
+      edad = 30,
+      domicilio = "Av. Siempre Viva 123",
+      telefono = "123456789",
+      fechaNacimiento = (1, 1, 1990),
+      buenaPersona = True,
+      plata = 1000
+    }
 
---ejercicio alumno con sinonimos
-type Nombre = String
-type Nota = [Number]
-type Alumno = (Nombre, Nota)
+lucas :: Persona
+lucas = Persona "lucas" 25 "Av. Siempre Viva 456" "987654321" (2, 2, 1995) True 500
 
-kevin :: Alumno
-kevin = ("Kevin", [10, 9, 8])
+-- persona cumple anio
 
-nombre :: Alumno -> Nombre
-nombre = fst'
-
-notas :: Alumno -> Nota
-notas = snd'
+cumplirAnio :: Persona -> Persona
+cumplirAnio persona =
+  persona
+    { edad = edad persona + 1
+    }
