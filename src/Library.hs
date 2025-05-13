@@ -1,27 +1,36 @@
 module Library where
-
 import PdePreludat ( Eq((==)), Bool(..), fromInteger, (+), Number, even, (.), String, (>), (>=) )
-import GHC.Num (Num)
 
-siguiente :: Number -> Number
-siguiente numero = numero + 1
+lista :: [Number]
+lista = [1 .. 10]
 
-siguientePar :: Number -> Bool
-siguientePar = even . siguiente
+tupla :: (Number, Number)
+tupla = (1, 2)
 
-type Persona = (String, Number)
+head' :: [a] -> a
+head' (x : xs) = x
 
-clara :: Persona
-clara = ("Clara", 10)
+tail' :: [a] -> [a]
+tail' (x : xs) = xs
 
--- calcular edad de una persona
-edad :: Persona -> Number
-edad (_, edad) = edad
 
---saber si es mayor de edad
-mayorEdad :: Number -> Bool
-mayorEdad edad = edad >= 18
+fst' :: (a , b) -> a
+fst' (primero, segundo) = primero
 
--- saber si es mayor de edad
-esMayorDeEdad :: Persona -> Bool
-esMayorDeEdad = mayorEdad . edad
+snd' :: (a , b) -> b
+snd' (primero, segundo) = segundo
+
+
+--ejercicio alumno con sinonimos
+type Nombre = String
+type Nota = [Number]
+type Alumno = (Nombre, Nota)
+
+kevin :: Alumno
+kevin = ("Kevin", [10, 9, 8])
+
+nombre :: Alumno -> Nombre
+nombre = fst'
+
+notas :: Alumno -> Nota
+notas = snd'
