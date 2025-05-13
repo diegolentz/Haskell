@@ -1,41 +1,21 @@
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 module Library where
 
-import PdePreludat (Bool (..), Eq ((==)), Number, Ord (max, (<=)), Show, String, error, even, fromInteger, (*), (+), (-), (.), (>), (>=), (||), reverse, otherwise, elem, and, or, sum, map, filter, flip, (/), not, (++))
+import PdePreludat (Bool (..), Eq ((==)), Number, Ord (max, (<=)), Show, String, error, even, fromInteger, (*), (+), (-), (.), (>), (>=), (||), reverse, otherwise, elem, and, or, sum, map, filter, flip, (/), not, (++), (&&))
 import Data.Type.Coercion (trans)
+import Data.Int (Int)
 
-cuadruple :: Number -> Number
-cuadruple x = x * 4
+elMayorDeLosTres :: Ord a => a -> a -> a -> a
+elMayorDeLosTres a b c
+  | a >= b && a >= c = a
+  | b >= a && b >= c = b
+  | otherwise = c
 
-largoDeListon :: Number
-largoDeListon = 300
+xor' :: Bool -> Bool -> Bool
+xor' a b
+  | a == b = False
+  | otherwise = True
 
-maderaCuadro :: Number -> Number
-maderaCuadro = cuadruple
+esMuchoMayor :: Number -> Number -> Bool
+esMuchoMayor a b = a - b > 10
 
-meAlcanza :: Number -> Bool
-meAlcanza largo = largo <= largoDeListon
-
-cuantoMeSobra :: Number -> Number
-cuantoMeSobra cantidad = largoDeListon - cantidad
-
-quePorcentaje :: Number -> Number
-quePorcentaje cantidad = (cantidad / largoDeListon) * 100
-
---func compuestas
-puedoHacerCuadroDe :: Number -> Bool
-puedoHacerCuadroDe lado = meAlcanza (maderaCuadro lado)
-
-puedoHacerCuadradoDe :: Number -> Bool
-puedoHacerCuadradoDe = meAlcanza . maderaCuadro
-
--- ej 2
-
-esMayorEdad :: Number -> Bool
-esMayorEdad edad = edad >= 18
-
-esMenorEdad :: Number -> Bool
-esMenorEdad edad = not (esMayorEdad edad)
-
-nombreFormateado :: String -> String -> String
-nombreFormateado nombre apellido = apellido ++ " " ++ nombre
