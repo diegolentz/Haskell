@@ -1,64 +1,44 @@
 -- {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 module Library where
 
-import PdePreludat (Bool (..), Eq ((==)), Number, Ord (max, (<=)), Show, String, error, even, fromInteger, (*), (+), (-), (.), (>), (>=), (||), reverse, otherwise, elem, and, or, sum, map, filter, flip, (/), not, (++), (&&), (^), any, take, length)
-import Data.Type.Coercion (trans)
-import Data.Int (Int)
-import GHC.Num (Num)
 import Data.Char (toLower)
+import Data.Int (Int)
+import Data.Type.Coercion (trans)
+import GHC.Num (Num)
 import Number (Number)
+import PdePreludat (Bool (..), Eq ((==)), Number, Ord (max, (<=)), Show, String, and, any, elem, error, even, filter, flip, fromInteger, length, map, not, or, otherwise, reverse, sum, take, (&&), (*), (+), (++), (-), (.), (/), (>), (>=), (^), (||))
 
-data Carta = Carta {
-  nombre :: String,
-  velocidad :: Number,
-  altura :: Number,
-  peso :: Number,
-  fuerza :: Number,
-  peleas :: Number,
-  tags :: [String]
-} deriving (Show, Eq)
+type Titulo = String
 
-maso :: [Carta]
-maso = [
-  Carta "batman" 10 10 10 10 10 ["humano", "vigilante"],
-  Carta "superman" 10 10 10 10 10 ["alguien", "super poderoso"],
-  Carta "flash" 10 10 10 10 10  ["humano", "velocista"],
-  Carta "linterna verde" 10 10 10 10 10 ["alguien", "vigilante"],
-  Carta "mujer maravilla" 10 10 10 10 10 ["humano", "avion invisible"],
-  Carta "aquaman" 10 10 10 10 10  ["humano", "vigilante del mar"],
-  Carta "Hulk" 10 10 10 10 10  ["alguien", "verde"]
-  ]
+type Autor = String
 
-largo :: Number
-largo = 10
+data Obra = UnaObra {titulo :: Titulo, autores :: [Autor]}
+  deriving (Show, Eq)
 
--- comienzan con bat
-esBat :: Carta -> Bool
-esBat carta = take 3 (map toLower (nombre carta)) == "bat"
+todasLasObras :: [Obra]
+todasLasObras = [UnaObra "sandman" ["gaiman"], UnaObra "socorro" ["ElsaBornemann"], UnaObra "buenos presagios" ["gaiman", "prachett"]]
 
-comienzaConBat :: [Carta] -> [Carta]
-comienzaConBat [] = []
-comienzaConBat (carta:cartas) 
-  | esBat carta = carta : comienzaConBat cartas
-  | otherwise   = comienzaConBat cartas
+-- es cierto que alguien escribio determinada obra?
+-- escribioObra :: Autor -> Obra -> Bool
+-- escribioObra autor obra = map toLower autor `elem` autores obra
 
--- tags muy largos
+escribioObra :: Autor -> Titulo -> [Obra] -> Bool
+escribioObra autor tituloBuscado = any (\obra -> titulo obra == tituloBuscado)
 
-esTagLargo :: [String] -> Bool
-esTagLargo [] = False
-esTagLargo (tag:tags)
-  | length tag > largo = True
-  | otherwise          = esTagLargo tags 
+autoresDe :: Titulo -> [Obra] -> [Autor]
+autoresDe unTitulo todasLasObras =
+  case filter (\obra -> titulo obra == unTitulo) todasLasObras of
+    [] -> [] -- Si no hay obras con ese título, devuelve una lista vacía
+    (obra : _) -> autores obra -- Si hay una obra, devuelve sus autores
 
-tagMuyLargo :: [Carta] -> [Carta]
-tagMuyLargo [] = []
-tagMuyLargo (carta:cartas)
-  | esTagLargo (tags carta) = carta : tagMuyLargo cartas
-  | otherwise               = tagMuyLargo cartas
+-- que obra escribio cierta persona
+queObraEscribio :: Autor -> [Obra] -> [Obra]
+queObraEscribio autor = filter (\obra -> autor `elem` autores obra)
 
--- cambiar alguien por alien
-cambiarAlguien :: [Carta] -> [Carta]
-cambiarAlguien [] = []
-cambiarAlguien (carta:cartas)
-  | elem "alguien" (tags carta) = carta {tags = ["alien"]} : cambiarAlguien cartas
-  | otherwise                   = cambiarAlguien cartas
+-- es cierto que cierta persona escribio alguna obra
+esCiertoQueEscribio :: Autor -> [Obra] -> Bool
+esCiertoQueEscribio autor = any (\obra -> autor `elem` (autores obra) )
+
+--es cierto qe la obra existe
+obraExiste :: Titulo -> [Obra] -> Bool
+obraExiste tituloBuscado = any (\obra -> tituloBuscado == (titulo obra) )
